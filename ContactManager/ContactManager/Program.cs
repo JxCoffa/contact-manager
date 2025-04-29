@@ -1,3 +1,5 @@
+using ContactManager.Services;
+
 namespace ContactManager
 {
     public class Program
@@ -8,8 +10,14 @@ namespace ContactManager
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+			builder.Services.AddHttpClient("ContactAPI", client =>
+			{
+				client.BaseAddress = new Uri("https://localhost:7197");
+			});
 
-            var app = builder.Build();
+			builder.Services.AddScoped<ContactService>();
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
