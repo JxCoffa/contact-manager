@@ -5,7 +5,12 @@ namespace ContactManager.Controllers
 {
 	public partial class ContactController 
 	{
-		public IActionResult Index()
+		public IActionResult Details()
+		{
+			return View();
+		}
+
+		public IActionResult Add()
 		{
 			return View();
 		}
