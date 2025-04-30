@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/ContactManager/ContactManager/ContactManager.csproj.user
+/ContactManager/.vs/ContactManager
+/ContactManager/ContactManagerAPI/appsettings.Development.json
+/ContactManager/ContactManagerAPI/ContactManagerAPI.csproj.user
+/ContactManager/ContactManagerAPI/obj/Debug/net8.0
+/ContactManager/ContactManagerAPI/obj
+/ContactManager/ContactManagerAPI/bin/Debug/net8.0
+/ContactManager/.vs/ProjectEvaluation
