@@ -1,4 +1,7 @@
 
+using ContactManagerAPI.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace ContactManagerAPI
 {
 	public class Program
@@ -9,7 +12,15 @@ namespace ContactManagerAPI
 
 			// Add services to the container.
 
+			var connectionString =
+			builder.Configuration.GetConnectionString("ContactManagerDatabase")
+			?? throw new InvalidOperationException("Connection string"
+			+ "'DefaultConnection' not found.");
+
+			builder.Services.AddDbContext<ContactDbContext>(options =>
+				options.UseSqlServer(connectionString));
 			builder.Services.AddControllers();
+
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
