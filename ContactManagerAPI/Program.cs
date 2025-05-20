@@ -11,17 +11,10 @@ namespace ContactManagerAPI
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
-
-			var connectionString =
-			builder.Configuration.GetConnectionString("ContactManagerDatabase")
-			?? throw new InvalidOperationException("Connection string"
-			+ "'DefaultConnection' not found.");
-
 			builder.Services.AddDbContext<ContactDbContext>(options =>
-				options.UseSqlServer(connectionString));
-			builder.Services.AddControllers();
+				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services.AddControllers();
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
@@ -35,11 +28,24 @@ namespace ContactManagerAPI
 			}
 
 			app.UseHttpsRedirection();
-
 			app.UseAuthorization();
-
-
 			app.MapControllers();
+
+			// Seed the database
+			using (var scope = app.Services.CreateScope())
+			{
+				var services = scope.ServiceProvider;
+				try
+				{
+					var context = services.GetRequiredService<ContactDbContext>();
+					context.Database.Migrate();
+				}
+				catch (Exception ex)
+				{
+					var logger = services.GetRequiredService<ILogger<Program>>();
+					logger.LogError(ex, "An error occurred while migrating the database.");
+				}
+			}
 
 			app.Run();
 		}

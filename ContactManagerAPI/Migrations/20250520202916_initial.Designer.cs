@@ -4,6 +4,7 @@ using ContactManagerAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContactManagerAPI.Migrations
 {
     [DbContext(typeof(ContactDbContext))]
-    partial class ContactDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520202916_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +110,7 @@ namespace ContactManagerAPI.Migrations
                         {
                             Id = 2,
                             CategoryId = 3,
-                            DateAdded = new DateTime(2023, 1, 15, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            DateAdded = new DateTime(2025, 5, 10, 22, 29, 13, 993, DateTimeKind.Local).AddTicks(9796),
                             Email = "efren@aol.com",
                             FirstName = "Efren",
                             LastName = "Herrera",
@@ -117,7 +120,7 @@ namespace ContactManagerAPI.Migrations
                         {
                             Id = 3,
                             CategoryId = 1,
-                            DateAdded = new DateTime(2023, 2, 20, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            DateAdded = new DateTime(2025, 5, 15, 22, 29, 13, 996, DateTimeKind.Local).AddTicks(3903),
                             Email = "MaryEllen@yahoo.com",
                             FirstName = "Mary Ellen",
                             LastName = "Walton",

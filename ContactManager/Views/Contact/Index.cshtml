@@ -1,0 +1,51 @@
+﻿@using ContactManager.Models.ViewModels
+@model IEnumerable<ContactViewModel>
+
+@{
+    ViewData["Title"] = "Contact Manager";
+}
+
+<h1>Contact Manager</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Contact</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Category</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-route-slug="@item.Slug">
+                        @item.FirstName
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-route-slug="@item.Slug">
+                        @item.LastName
+                    </a>
+                </td>
+                <td>@item.Phone</td>
+                <td>@item.Email</td>
+                <td>@item.CategoryName</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-route-slug="@item.Slug"
+                       class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-slug="@item.Slug"
+                       class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,16 +1,140 @@
-﻿using ContactManager.Services;
+﻿using ContactManager.Models.ViewModels;  
+using ContactManager.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
+
 namespace ContactManager.Controllers
 {
-	public class ContactController(ContactService contactService) : Controller
+	// ContactsController.cs
+	public class ContactController : Controller
 	{
-		private readonly ContactService _contactService = contactService;
+		private readonly IContactService _contactService;
 
-		public async Task<IActionResult> Contacts()
+		public ContactController(IContactService contactService)
 		{
-			var contacts = await _contactService.GetContacts();  // This is now List<ContactDto>
-			return View(contacts); // Pass the list to your view
+			_contactService = contactService;
 		}
 
+		// GET: Contacts
+		public async Task<IActionResult> Index()
+		{
+			var contacts = await _contactService.GetAllContactsAsync();
+			return View(contacts);
+		}
+
+		// GET: Contacts/Details/5/delores-del-rio
+		[Route("Contacts/Details/{id}/{slug?}")]
+		public async Task<IActionResult> Details(int id, string slug = null)
+		{
+			var contact = await _contactService.GetContactByIdAsync(id);
+			if (contact == null)
+			{
+				return NotFound();
+			}
+
+			return View(contact);
+		}
+
+		// GET: Contacts/Create
+		public async Task<IActionResult> Create()
+		{
+			var categories = await _contactService.GetCategoriesAsync();
+			var model = new ContactViewModel
+			{
+				CategoryOptions = new SelectList(categories, "Id", "Name")
+			};
+
+			return View(model);
+		}
+
+		// POST: Contacts/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(ContactViewModel contact)
+		{
+			if (ModelState.IsValid)
+			{
+				var createdContact = await _contactService.CreateContactAsync(contact);
+				return RedirectToAction(nameof(Details),
+					new { id = createdContact.Id, slug = createdContact.Slug });
+			}
+
+			// If we got this far, something failed; redisplay form
+			var categories = await _contactService.GetCategoriesAsync();
+			contact.CategoryOptions = new SelectList(categories, "Id", "Name");
+			return View(contact);
+		}
+
+		// GET: Contacts/Edit/5/delores-del-rio
+		[Route("Contacts/Edit/{id}/{slug?}")]
+		public async Task<IActionResult> Edit(int id, string slug = null)
+		{
+			var contact = await _contactService.GetContactByIdAsync(id);
+			if (contact == null)
+			{
+				return NotFound();
+			}
+
+			var categories = await _contactService.GetCategoriesAsync();
+			contact.CategoryOptions = new SelectList(categories, "Id", "Name", contact.CategoryId);
+
+			return View(contact);
+		}
+
+		// POST: Contacts/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Route("Contacts/Edit/{id}/{slug?}")]
+		public async Task<IActionResult> Edit(int id, ContactViewModel contact)
+		{
+			if (id != contact.Id)
+			{
+				return NotFound();
+			}
+
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					await _contactService.UpdateContactAsync(contact);
+					return RedirectToAction(nameof(Details),
+						new { id = contact.Id, slug = contact.Slug });
+				}
+				catch
+				{
+					// Log error
+					ModelState.AddModelError("", "Unable to save changes.");
+				}
+			}
+
+			// If we got this far, something failed; redisplay form
+			var categories = await _contactService.GetCategoriesAsync();
+			contact.CategoryOptions = new SelectList(categories, "Id", "Name", contact.CategoryId);
+			return View(contact);
+		}
+
+		// GET: Contacts/Delete/5/delores-del-rio
+		[Route("Contacts/Delete/{id}/{slug?}")]
+		public async Task<IActionResult> Delete(int id, string slug = null)
+		{
+			var contact = await _contactService.GetContactByIdAsync(id);
+			if (contact == null)
+			{
+				return NotFound();
+			}
+
+			return View(contact);
+		}
+
+		// POST: Contacts/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		[Route("Contacts/Delete/{id}/{slug?}")]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			await _contactService.DeleteContactAsync(id);
+			return RedirectToAction(nameof(Index));
+		}
 	}
 }

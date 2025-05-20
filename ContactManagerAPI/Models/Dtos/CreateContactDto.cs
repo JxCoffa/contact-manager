@@ -1,21 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ContactManagerAPI.Models.ViewModels
+namespace ContactManagerAPI.Models.Dtos
 {
-	public class Contact
+	public class CreateContactDto
 	{
-		public int Id { get; set; }
 		[Required]
 		public string FirstName { get; set; }
+
 		[Required]
 		public string LastName { get; set; }
+
+		[Required]
+		public string Phone { get; set; }
+
 		[Required]
 		[EmailAddress]
 		public string Email { get; set; }
-		[Required]
-		public string PhoneNumber { get; set; }
-		[Required]
-		[Range(1, 2)]
+
+		[Range(1, int.MaxValue)]
 		public int CategoryId { get; set; }
 	}
 }
