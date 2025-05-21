@@ -6,8 +6,12 @@ namespace ContactManager.Services
 	public class ContactService : IContactService
 	{
 		private readonly HttpClient _httpClient;
+		// gives it the rights to read the appsettings.json
+		// "ApiBaseUrl": "https://localhost:7262",
 		private readonly IConfiguration _configuration;
 
+		// Initialize ContactService with HttpClient and configuration,
+		// setting the HttpClient's base URL from the app's settings.
 		public ContactService(HttpClient httpClient, IConfiguration configuration)
 		{
 			_httpClient = httpClient;

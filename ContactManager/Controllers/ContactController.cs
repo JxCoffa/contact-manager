@@ -2,11 +2,9 @@
 using ContactManager.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Threading.Tasks;
 
 namespace ContactManager.Controllers
 {
-	// ContactsController.cs
 	public class ContactController : Controller
 	{
 		private readonly IContactService _contactService;
@@ -16,14 +14,13 @@ namespace ContactManager.Controllers
 			_contactService = contactService;
 		}
 
-		// GET: Contacts
 		public async Task<IActionResult> Index()
 		{
 			var contacts = await _contactService.GetAllContactsAsync();
 			return View(contacts);
 		}
 
-		// GET: Contacts/Details/5/delores-del-rio
+		// GET: Contacts/Details/1/jane-doe
 		[Route("Contacts/Details/{id}/{slug?}")]
 		public async Task<IActionResult> Details(int id, string slug = null)
 		{
@@ -53,16 +50,28 @@ namespace ContactManager.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(ContactViewModel contact)
 		{
-			if (ModelState.IsValid)
-			{
-				var createdContact = await _contactService.CreateContactAsync(contact);
-				return RedirectToAction(nameof(Details),
-					new { id = createdContact.Id, slug = createdContact.Slug });
-			}
+			
+				if (ModelState.IsValid)
+				{
+					var createdContact = await _contactService.CreateContactAsync(contact);
 
-			// If we got this far, something failed; redisplay form
-			var categories = await _contactService.GetCategoriesAsync();
-			contact.CategoryOptions = new SelectList(categories, "Id", "Name");
+					if (createdContact == null)
+					{
+						ModelState.AddModelError("", "Failed to create contact. Please try again.");
+					}
+					else
+					{
+						return RedirectToAction(nameof(Details),
+							new { id = createdContact.Id, slug = createdContact.Slug });
+					}
+				}
+			foreach (var entry in ModelState)
+			{
+				foreach (var error in entry.Value.Errors)
+				{
+					Console.WriteLine($"Validation error for {entry.Key}: {error.ErrorMessage}");
+				}
+			}
 			return View(contact);
 		}
 
@@ -92,7 +101,7 @@ namespace ContactManager.Controllers
 			{
 				return NotFound();
 			}
-
+			 
 			if (ModelState.IsValid)
 			{
 				try

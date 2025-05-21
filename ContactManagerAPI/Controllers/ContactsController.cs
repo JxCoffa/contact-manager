@@ -6,7 +6,6 @@ using ContactManagerAPI.Models.Dtos;
 
 namespace ContactManagerAPI.Controllers
 {
-	// ContactsController.cs
 	[Route("api/[controller]")]
 	[ApiController]
 	public class ContactsController : ControllerBase
@@ -39,7 +38,7 @@ namespace ContactManagerAPI.Controllers
 				.ToListAsync();
 		}
 
-		// GET: api/contacts/5/delores-del-rio
+		// GET: api/contacts/1/jane-doe
 		[HttpGet("{id}/{slug?}")]
 		public async Task<ActionResult<ContactDto>> GetContact(int id, string slug = null)
 		{
@@ -70,6 +69,16 @@ namespace ContactManagerAPI.Controllers
 		[HttpPost]
 		public async Task<ActionResult<ContactDto>> PostContact(CreateContactDto createDto)
 		{
+			var categoryExists = await _context.Categories.AnyAsync(c => c.Id == createDto.CategoryId);
+			if (!categoryExists)
+			{
+				return BadRequest(new
+				{
+					Error = "Invalid CategoryId",
+					ValidCategories = await _context.Categories.Select(c => new { c.Id, c.Name }).ToListAsync()
+				});
+			}
+
 			var contact = new Contact
 			{
 				FirstName = createDto.FirstName,
@@ -98,16 +107,20 @@ namespace ContactManagerAPI.Controllers
 				});
 		}
 
-		// PUT: api/contacts/5
+		// PUT: api/contacts/1
 		[HttpPut("{id}")]
 		public async Task<IActionResult> PutContact(int id, UpdateContactDto updateDto)
 		{
+			// the 'url id' matches the 'contact id' in the update data to avoid errors.
 			if (id != updateDto.Id)
 			{
 				return BadRequest();
 			}
 
+			// Find and retrieve the contact from the database by its ID.
 			var contact = await _context.Contacts.FindAsync(id);
+
+			// if its empty return a notfound
 			if (contact == null)
 			{
 				return NotFound();
@@ -119,26 +132,10 @@ namespace ContactManagerAPI.Controllers
 			contact.Email = updateDto.Email;
 			contact.CategoryId = updateDto.CategoryId;
 
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!ContactExists(id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-
 			return NoContent();
 		}
 
-		// DELETE: api/contacts/5
+		// DELETE: api/contacts/1
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteContact(int id)
 		{

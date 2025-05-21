@@ -20,13 +20,14 @@ namespace ContactManagerAPI.Models
 		[EmailAddress]
 		public string Email { get; set; }
 
-		[Range(1, int.MaxValue)]
+		[Range(1, 3)]
 		public int CategoryId { get; set; }
 
 		public Category Category { get; set; }
 
 		public DateTime DateAdded { get; set; }
 
+		// Full name with - (example: jane-doe)
 		public string Slug => $"{FirstName}-{LastName}".ToLowerInvariant().Replace(" ", "-");
 	}
 
