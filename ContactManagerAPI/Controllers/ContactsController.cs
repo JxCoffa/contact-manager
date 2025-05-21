@@ -111,16 +111,12 @@ namespace ContactManagerAPI.Controllers
 		[HttpPut("{id}")]
 		public async Task<IActionResult> PutContact(int id, UpdateContactDto updateDto)
 		{
-			// the 'url id' matches the 'contact id' in the update data to avoid errors.
 			if (id != updateDto.Id)
 			{
-				return BadRequest();
+				return BadRequest("ID mismatch between route and body");
 			}
 
-			// Find and retrieve the contact from the database by its ID.
 			var contact = await _context.Contacts.FindAsync(id);
-
-			// if its empty return a notfound
 			if (contact == null)
 			{
 				return NotFound();
@@ -132,7 +128,19 @@ namespace ContactManagerAPI.Controllers
 			contact.Email = updateDto.Email;
 			contact.CategoryId = updateDto.CategoryId;
 
-			return NoContent();
+			try
+			{
+				await _context.SaveChangesAsync(); // THIS WAS MISSING
+				return NoContent();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!ContactExists(id))
+				{
+					return NotFound();
+				}
+				throw;
+			}
 		}
 
 		// DELETE: api/contacts/1

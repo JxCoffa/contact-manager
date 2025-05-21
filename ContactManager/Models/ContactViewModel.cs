@@ -32,15 +32,12 @@ namespace ContactManager.Models.ViewModels
 		// i dont want to map this because you cant enter info innit 
 		// which can cause errors so im telling the model binding im skipping this 
 		// and not putting it in the Db
-		[NotMapped] 
 		[ValidateNever]
 		public SelectList CategoryOptions { get; set; }
 
-		[NotMapped]
 		[ValidateNever]
 		public string Slug { get; set; }
 
-		[NotMapped]
 		[ValidateNever]
 		public string CategoryName { get; set; }
 

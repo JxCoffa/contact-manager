@@ -1,5 +1,6 @@
 ﻿using ContactManager.Models.ViewModels;
 using ContactManagerAPI.Models;
+using ContactManagerAPI.Models.Dtos;
 
 namespace ContactManager.Services
 {

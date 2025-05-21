@@ -1,5 +1,6 @@
 ﻿using ContactManager.Models.ViewModels;  
 using ContactManager.Services;
+using ContactManagerAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -33,6 +34,7 @@ namespace ContactManager.Controllers
 			return View(contact);
 		}
 
+		#region Create
 		// GET: Contacts/Create
 		public async Task<IActionResult> Create()
 		{
@@ -47,7 +49,6 @@ namespace ContactManager.Controllers
 
 		// POST: Contacts/Create
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(ContactViewModel contact)
 		{
 			
@@ -74,10 +75,12 @@ namespace ContactManager.Controllers
 			}
 			return View(contact);
 		}
-
-		// GET: Contacts/Edit/5/delores-del-rio
+		#endregion
+		#region Edit
+		// GET: Contacts/Edit/1/jane-doe
 		[Route("Contacts/Edit/{id}/{slug?}")]
-		public async Task<IActionResult> Edit(int id, string slug = null)
+
+		public async Task<IActionResult> Edit(int id)
 		{
 			var contact = await _contactService.GetContactByIdAsync(id);
 			if (contact == null)
@@ -122,8 +125,9 @@ namespace ContactManager.Controllers
 			contact.CategoryOptions = new SelectList(categories, "Id", "Name", contact.CategoryId);
 			return View(contact);
 		}
-
-		// GET: Contacts/Delete/5/delores-del-rio
+		#endregion
+		#region Delete
+		// GET: Contacts/Delete/5/jane-doe
 		[Route("Contacts/Delete/{id}/{slug?}")]
 		public async Task<IActionResult> Delete(int id, string slug = null)
 		{
@@ -138,12 +142,12 @@ namespace ContactManager.Controllers
 
 		// POST: Contacts/Delete/5
 		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
 		[Route("Contacts/Delete/{id}/{slug?}")]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
 			await _contactService.DeleteContactAsync(id);
 			return RedirectToAction(nameof(Index));
 		}
+		#endregion
 	}
 }
