@@ -29,9 +29,6 @@ namespace ContactManager.Models.ViewModels
 		[Display(Name = "Category")]
 		public int CategoryId { get; set; }
 
-		// i dont want to map this because you cant enter info innit 
-		// which can cause errors so im telling the model binding im skipping this 
-		// and not putting it in the Db
 		[ValidateNever]
 		public SelectList CategoryOptions { get; set; }
 

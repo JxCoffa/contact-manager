@@ -11,7 +11,6 @@ namespace ContactManagerAPI.Controllers
 	public class ContactsController : ControllerBase
 	{
 		private readonly ContactDbContext _context;
-
 		public ContactsController(ContactDbContext context)
 		{
 			_context = context;
@@ -128,19 +127,8 @@ namespace ContactManagerAPI.Controllers
 			contact.Email = updateDto.Email;
 			contact.CategoryId = updateDto.CategoryId;
 
-			try
-			{
-				await _context.SaveChangesAsync(); // THIS WAS MISSING
-				return NoContent();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!ContactExists(id))
-				{
-					return NotFound();
-				}
-				throw;
-			}
+			await _context.SaveChangesAsync();
+			return NoContent();
 		}
 
 		// DELETE: api/contacts/1

@@ -12,7 +12,7 @@ namespace ContactManager
 			builder.Services.AddControllersWithViews();
 
 			// Configure HttpClient for API calls
-			builder.Services.AddHttpClient<IContactService, ContactService>(client =>
+			builder.Services.AddHttpClient<ContactService>(client =>
 			{
 				client.BaseAddress = new Uri("https://localhost:7262");
 			});

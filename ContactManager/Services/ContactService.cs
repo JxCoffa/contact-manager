@@ -4,7 +4,7 @@ using ContactManagerAPI.Models.Dtos;
 
 namespace ContactManager.Services
 {
-	public class ContactService : IContactService
+	public class ContactService
 	{
 		private readonly HttpClient _httpClient;
 		// gives it the rights to read the appsettings.json
@@ -12,7 +12,8 @@ namespace ContactManager.Services
 		private readonly IConfiguration _configuration;
 
 		// Initialize ContactService with HttpClient and configuration,
-		// setting the HttpClient's base URL from the app's settings.
+		// setting the HttpClients base uri from the apps settings.
+		// and when you call it you will get it with it
 		public ContactService(HttpClient httpClient, IConfiguration configuration)
 		{
 			_httpClient = httpClient;

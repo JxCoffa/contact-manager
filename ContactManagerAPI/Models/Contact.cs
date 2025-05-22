@@ -27,7 +27,7 @@ namespace ContactManagerAPI.Models
 
 		public DateTime DateAdded { get; set; }
 
-		// Full name with - (example: jane-doe)
+		// example: jane-doe
 		public string Slug => $"{FirstName}-{LastName}".ToLowerInvariant().Replace(" ", "-");
 	}
 

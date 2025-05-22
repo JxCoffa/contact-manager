@@ -6,7 +6,7 @@ namespace ContactManagerAPI.Models.Dtos
 	{
 			[Required]
 			[Range(1, int.MaxValue)]
-			public int Id { get; set; }  // Must be required integer
+			public int Id { get; set; } 
 
 			[Required]
 			public string FirstName { get; set; }
@@ -21,7 +21,7 @@ namespace ContactManagerAPI.Models.Dtos
 			[EmailAddress]
 			public string Email { get; set; }
 
-			[Range(1, 3)]
+			[Range(1, 3, ErrorMessage = "CategoryId must be 1 (Family), 2 (Friend), or 3 (Work)")]
 			public int CategoryId { get; set; }
 	}
 }

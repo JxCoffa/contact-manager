@@ -8,9 +8,9 @@ namespace ContactManager.Controllers
 {
 	public class ContactController : Controller
 	{
-		private readonly IContactService _contactService;
+		private readonly ContactService _contactService;
 
-		public ContactController(IContactService contactService)
+		public ContactController(ContactService contactService)
 		{
 			_contactService = contactService;
 		}
