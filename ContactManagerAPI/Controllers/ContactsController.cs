@@ -73,7 +73,7 @@ namespace ContactManagerAPI.Controllers
 			{
 				return BadRequest(new
 				{
-					Error = "Invalid CategoryId",
+					Error = "CategoryId is not valid",
 					ValidCategories = await _context.Categories.Select(c => new { c.Id, c.Name }).ToListAsync()
 				});
 			}
@@ -112,7 +112,7 @@ namespace ContactManagerAPI.Controllers
 		{
 			if (id != updateDto.Id)
 			{
-				return BadRequest("ID mismatch between route and body");
+				return BadRequest("ID mismatching: route and body");
 			}
 
 			var contact = await _context.Contacts.FindAsync(id);

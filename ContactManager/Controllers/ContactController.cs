@@ -115,12 +115,10 @@ namespace ContactManager.Controllers
 				}
 				catch
 				{
-					// Log error
 					ModelState.AddModelError("", "Unable to save changes.");
 				}
 			}
 
-			// If we got this far, something failed; redisplay form
 			var categories = await _contactService.GetCategoriesAsync();
 			contact.CategoryOptions = new SelectList(categories, "Id", "Name", contact.CategoryId);
 			return View(contact);
