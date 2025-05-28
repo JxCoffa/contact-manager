@@ -66,13 +66,6 @@ namespace ContactManager.Controllers
 							new { id = createdContact.Id, slug = createdContact.Slug });
 					}
 				}
-			foreach (var entry in ModelState)
-			{
-				foreach (var error in entry.Value.Errors)
-				{
-					Console.WriteLine($"Validation error for {entry.Key}: {error.ErrorMessage}");
-				}
-			}
 			return View(contact);
 		}
 		#endregion
@@ -96,7 +89,6 @@ namespace ContactManager.Controllers
 
 		// POST: Contacts/Edit/5
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		[Route("Contacts/Edit/{id}/{slug?}")]
 		public async Task<IActionResult> Edit(int id, ContactViewModel contact)
 		{

@@ -14,10 +14,7 @@ namespace ContactManagerAPI.Data
 		public DbSet<Contact> Contacts { get; set; }
 		public DbSet<Category> Categories { get; set; }
 
-		/// <summary>
-		/// Sets up some starting data for the database, like categories and example contacts,
-		/// this runs when the database is being created or updated.
-		/// </summary>
+		// gives some example data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			// CategoryId categories 
