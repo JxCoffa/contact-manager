@@ -1,6 +1,4 @@
 ﻿using ContactManager.Models.ViewModels;
-using ContactManagerAPI.Models;
-using ContactManagerAPI.Models.Dtos;
 
 namespace ContactManager.Services
 {
@@ -65,5 +63,6 @@ namespace ContactManager.Services
 
 			return await response.Content.ReadFromJsonAsync<IEnumerable<Category>>();
 		}
+
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using ContactManager.Models.ViewModels;  
 using ContactManager.Services;
-using ContactManagerAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -26,6 +25,7 @@ namespace ContactManager.Controllers
 		public async Task<IActionResult> Details(int id, string slug = null)
 		{
 			var contact = await _contactService.GetContactByIdAsync(id);
+
 			if (contact == null)
 			{
 				return NotFound();
@@ -58,14 +58,16 @@ namespace ContactManager.Controllers
 
 					if (createdContact == null)
 					{
-						ModelState.AddModelError("", "Failed to create contact. Please try again.");
+						ModelState.AddModelError("", "Failed to create a contact");
 					}
 					else
 					{
 						return RedirectToAction(nameof(Details),
 							new { id = createdContact.Id, slug = createdContact.Slug });
-					}
 				}
+				}
+			var categories = await _contactService.GetCategoriesAsync();
+			contact.CategoryOptions = new SelectList(categories, "Id", "Name");
 			return View(contact);
 		}
 		#endregion

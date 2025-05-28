@@ -42,7 +42,7 @@ namespace ContactManagerAPI.Controllers
 		[HttpGet("{id}/{slug?}")]
 		public async Task<ActionResult<ContactDto>> GetContact(int id, string slug = null)
 		{
-			// Load category and find contact based on matching id
+			// Load category entity and find contact based on matching id
 			var contact = await _context.Contacts
 				.Include(c => c.Category)
 				.FirstOrDefaultAsync(c => c.Id == id);
@@ -142,6 +142,7 @@ namespace ContactManagerAPI.Controllers
 			return NoContent();
 		}
 
+		// Finds matching id and deletes the contact based on the matching id
 		// DELETE: api/contacts/1
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteContact(int id)

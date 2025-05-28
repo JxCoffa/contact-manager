@@ -39,8 +39,10 @@ namespace ContactManager.Models.ViewModels
 		public string CategoryName { get; set; }
 
 		[Display(Name = "Date Added")]
+		[ValidateNever]
 		public DateTime DateAdded { get; set; }
 
+		[ValidateNever]
 		[Display(Name = "Name")]
 		public string FullName => $"{FirstName} {LastName}";
 	}
